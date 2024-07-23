@@ -47,6 +47,12 @@
 		B8DE65162C4E50B80054E882 /* SelectCharacterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DE65152C4E50B80054E882 /* SelectCharacterVC.swift */; };
 		B8DE65182C4E50EA0054E882 /* SelectCharacterVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DE65172C4E50EA0054E882 /* SelectCharacterVM.swift */; };
 		B8DE651B2C4E51130054E882 /* CharacterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DE651A2C4E51130054E882 /* CharacterCollectionViewCell.swift */; };
+		B8DE654A2C4F96A70054E882 /* TrendVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DE65492C4F96A70054E882 /* TrendVM.swift */; };
+		B8DE654D2C4F9BF60054E882 /* TrendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DE654C2C4F9BF60054E882 /* TrendTableViewCell.swift */; };
+		B8DE654F2C4F9C9F0054E882 /* Cell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DE654E2C4F9C9F0054E882 /* Cell+Extension.swift */; };
+		B8DE65512C4F9D8A0054E882 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DE65502C4F9D8A0054E882 /* PhotoCollectionViewCell.swift */; };
+		B8DE65562C4FEB130054E882 /* SearchPhotoVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DE65552C4FEB130054E882 /* SearchPhotoVM.swift */; };
+		B8DE655A2C4FF24E0054E882 /* LikedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DE65592C4FF24E0054E882 /* LikedView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +92,12 @@
 		B8DE65152C4E50B80054E882 /* SelectCharacterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCharacterVC.swift; sourceTree = "<group>"; };
 		B8DE65172C4E50EA0054E882 /* SelectCharacterVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCharacterVM.swift; sourceTree = "<group>"; };
 		B8DE651A2C4E51130054E882 /* CharacterCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCollectionViewCell.swift; sourceTree = "<group>"; };
+		B8DE65492C4F96A70054E882 /* TrendVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendVM.swift; sourceTree = "<group>"; };
+		B8DE654C2C4F9BF60054E882 /* TrendTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendTableViewCell.swift; sourceTree = "<group>"; };
+		B8DE654E2C4F9C9F0054E882 /* Cell+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cell+Extension.swift"; sourceTree = "<group>"; };
+		B8DE65502C4F9D8A0054E882 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		B8DE65552C4FEB130054E882 /* SearchPhotoVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPhotoVM.swift; sourceTree = "<group>"; };
+		B8DE65592C4FF24E0054E882 /* LikedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +192,7 @@
 				B8DE64EF2C4E44A60054E882 /* FileManager.swift */,
 				B8DE65102C4E4C100054E882 /* ProfileVCType.swift */,
 				B8DE65132C4E505D0054E882 /* User.swift */,
+				B8DE654E2C4F9C9F0054E882 /* Cell+Extension.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -191,6 +204,8 @@
 				B8DE64F52C4E459C0054E882 /* ButtonType.swift */,
 				B8DE64F72C4E45BD0054E882 /* BaseFont.swift */,
 				B8DE650C2C4E4B0C0054E882 /* CharacterView.swift */,
+				B8DE65502C4F9D8A0054E882 /* PhotoCollectionViewCell.swift */,
+				B8DE65592C4FF24E0054E882 /* LikedView.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -216,7 +231,9 @@
 		B8DE64FA2C4E472F0054E882 /* Trend */ = {
 			isa = PBXGroup;
 			children = (
+				B8DE654B2C4F9BEC0054E882 /* Cell */,
 				B8DE64FE2C4E48BC0054E882 /* TrendVC.swift */,
+				B8DE65492C4F96A70054E882 /* TrendVM.swift */,
 			);
 			path = Trend;
 			sourceTree = "<group>";
@@ -233,6 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				B8DE65022C4E48C90054E882 /* SearchPhotoVC.swift */,
+				B8DE65552C4FEB130054E882 /* SearchPhotoVM.swift */,
 			);
 			path = SearchPhoto;
 			sourceTree = "<group>";
@@ -279,6 +297,14 @@
 			isa = PBXGroup;
 			children = (
 				B8DE651A2C4E51130054E882 /* CharacterCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		B8DE654B2C4F9BEC0054E882 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				B8DE654C2C4F9BF60054E882 /* TrendTableViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -378,11 +404,14 @@
 				B8DE65052C4E48D10054E882 /* LikeVC.swift in Sources */,
 				B8DE65182C4E50EA0054E882 /* SelectCharacterVM.swift in Sources */,
 				B8DE64F02C4E44A60054E882 /* FileManager.swift in Sources */,
+				B8DE654A2C4F96A70054E882 /* TrendVM.swift in Sources */,
 				B8DE65112C4E4C100054E882 /* ProfileVCType.swift in Sources */,
 				B8DE64D42C4E40430054E882 /* APIInfo.swift in Sources */,
 				B8DE64EC2C4E446C0054E882 /* UIColor+Extension.swift in Sources */,
 				B8DE64F42C4E45090054E882 /* Character.swift in Sources */,
 				B8DE64E22C4E43140054E882 /* ImageAssets.swift in Sources */,
+				B8DE654D2C4F9BF60054E882 /* TrendTableViewCell.swift in Sources */,
+				B8DE65562C4FEB130054E882 /* SearchPhotoVM.swift in Sources */,
 				B8DE64DD2C4E42520054E882 /* MainTBC.swift in Sources */,
 				B8DE64FF2C4E48BC0054E882 /* TrendVC.swift in Sources */,
 				B8DE64E92C4E44130054E882 /* BaseButton.swift in Sources */,
@@ -394,10 +423,13 @@
 				B8DE651B2C4E51130054E882 /* CharacterCollectionViewCell.swift in Sources */,
 				B8DE65142C4E505D0054E882 /* User.swift in Sources */,
 				B8DE64AE2C4E3E5A0054E882 /* SceneDelegate.swift in Sources */,
+				B8DE65512C4F9D8A0054E882 /* PhotoCollectionViewCell.swift in Sources */,
 				B8DE64F62C4E459C0054E882 /* ButtonType.swift in Sources */,
 				B8DE650B2C4E4A920054E882 /* ProfileSettingVM.swift in Sources */,
 				B8DE64DF2C4E42890054E882 /* OnboardingVC.swift in Sources */,
+				B8DE654F2C4F9C9F0054E882 /* Cell+Extension.swift in Sources */,
 				B8DE65162C4E50B80054E882 /* SelectCharacterVC.swift in Sources */,
+				B8DE655A2C4FF24E0054E882 /* LikedView.swift in Sources */,
 				B8DE64D92C4E420A0054E882 /* BaseVC.swift in Sources */,
 				B8DE65012C4E48C30054E882 /* RandomPhotoVC.swift in Sources */,
 				B8DE64DB2C4E42430054E882 /* BaseVM.swift in Sources */,

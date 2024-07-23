@@ -44,7 +44,7 @@ class MainTBC: UITabBarController {
         var vc: UIViewController {
             switch self {
             case .trend:
-                return UINavigationController(rootViewController: TrendVC(title: self.title))
+                return TrendVC()
             case .randomPhoto:
                 return UINavigationController(rootViewController: RandomPhotoVC(title: self.title))
             case .searchPhoto:

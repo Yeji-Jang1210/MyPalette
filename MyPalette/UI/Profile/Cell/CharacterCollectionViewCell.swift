@@ -9,8 +9,6 @@ import UIKit
 
 class CharacterCollectionViewCell: UICollectionViewCell {
     
-    static let identifier = String(describing: CharacterCollectionViewCell.self)
-    
     //MARK: - object
     let characterView: CharacterView = {
         let object = CharacterView.init(style: .unselect)

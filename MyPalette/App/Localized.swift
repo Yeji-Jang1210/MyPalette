@@ -32,6 +32,9 @@ enum Localized {
     //etc
     case complete
     case save_button
+    case searchBar_placeholder
+    case search_result_init
+    case search_result_empty
     
     var title: String {
         switch self {
@@ -72,6 +75,12 @@ enum Localized {
             return "사용가능한 닉네임입니다."
         case .complete:
             return "완료"
+        case .searchBar_placeholder:
+            return "키워드 검색"
+        case .search_result_init:
+            return "사진을 검색해보세요."
+        case .search_result_empty:
+            return "검색 결과가 없어요."
         default:
             return ""
         }
