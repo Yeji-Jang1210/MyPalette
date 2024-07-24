@@ -18,13 +18,13 @@ final class SearchPhotoVC: BaseVC {
         return object
     }()
     
-    let emptyView: UIView = {
+    private let emptyView: UIView = {
         let object = UIView()
         object.isHidden = true
         return object
     }()
     
-    let emptyLabel = {
+    private let emptyLabel = {
         let object = UILabel()
         object.text = Localized.search_result_init.text
         object.font = BaseFont.large.boldFont
@@ -42,7 +42,7 @@ final class SearchPhotoVC: BaseVC {
         object.dataSource = self
         //object.prefetchDataSource = self
         object.keyboardDismissMode = .onDrag
-        object.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
+        object.register(SearchPhotoCollectionViewCell.self, forCellWithReuseIdentifier: SearchPhotoCollectionViewCell.identifier)
         return object
     }()
     
@@ -106,8 +106,8 @@ extension SearchPhotoVC: UICollectionViewDelegate, UICollectionViewDataSource, U
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
-        cell.setData(isTopic: false)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchPhotoCollectionViewCell.identifier, for: indexPath) as! SearchPhotoCollectionViewCell
+        cell.setData(isSelected: Bool.random())
         return cell
     }
 }

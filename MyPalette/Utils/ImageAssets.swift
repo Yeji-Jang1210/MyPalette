@@ -25,4 +25,8 @@ struct ImageAssets {
     static let camera = UIImage(systemName: "camera.fill")
     static let star = UIImage(systemName: "star.fill")
     
+    //saveButton
+    static let saveButtonActive = UIImage(named: "like_circle")
+    static let saveButtonInActive = UIImage(named: "like_circle_inactive")
+    
 }

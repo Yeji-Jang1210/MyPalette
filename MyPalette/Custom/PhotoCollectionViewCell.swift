@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class PhotoCollectionViewCell: UICollectionViewCell {
+class PhotoCollectionViewCell: UICollectionViewCell {
     
     private let imageView = {
         let object = UIImageView()
@@ -18,38 +18,33 @@ final class PhotoCollectionViewCell: UICollectionViewCell {
         return object
     }()
     
-    private let likedView = {
-        let object = LikedView()
-        return object
-    }()
+    var cornerRadius: CGFloat = 0 {
+        didSet {
+            imageView.layer.cornerRadius = cornerRadius
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureHierarchy()
         configureLayout()
+        configureUI()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     func configureHierarchy(){
         contentView.addSubview(imageView)
-        contentView.addSubview(likedView)
     }
     
     func configureLayout(){
         imageView.snp.makeConstraints { make in
             make.edges.equalTo(contentView.safeAreaLayoutGuide)
         }
-        
-        likedView.snp.makeConstraints { make in
-            make.height.equalTo(36)
-            make.leading.bottom.equalTo(imageView).inset(12)
-        }
     }
     
-    public func setData(isTopic: Bool){
-        imageView.layer.cornerRadius = isTopic ? 20 : 0
-    }
+    func configureUI(){ }
 }

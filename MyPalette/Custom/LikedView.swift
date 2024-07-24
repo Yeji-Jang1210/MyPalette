@@ -21,7 +21,6 @@ final class LikedView: UIView {
     private let likedLabel = {
         let object = UILabel()
         object.textColor = .white
-        object.text = "88,888"
         object.font = BaseFont.small.basicFont
         return object
     }()
@@ -34,6 +33,12 @@ final class LikedView: UIView {
         configureLayout()
     }
     
+    var count: Int? {
+        didSet {
+            likedLabel.text = count?.formatted()
+        }
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -44,6 +49,10 @@ final class LikedView: UIView {
     }
     
     private func configureLayout(){
+        snp.makeConstraints { make in
+            make.height.equalTo(30)
+        }
+        
         starImageView.snp.makeConstraints { make in
             make.size.equalTo(18)
             make.leading.equalToSuperview().offset(12)

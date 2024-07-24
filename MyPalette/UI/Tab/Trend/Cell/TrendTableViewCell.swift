@@ -17,14 +17,14 @@ final class TrendTableViewCell: UITableViewCell {
         return object
     }()
     
-    let collectionView = {
+    lazy var collectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 10
         layout.minimumInteritemSpacing = 10
         layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-        let object = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
+        let object = UICollectionView(frame: .zero, collectionViewLayout: layout)
         return object
     }()
     
