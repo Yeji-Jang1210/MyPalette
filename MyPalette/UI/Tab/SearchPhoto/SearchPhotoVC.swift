@@ -10,6 +10,7 @@ import UIKit
 final class SearchPhotoVC: BaseVC {
     
     private lazy var searchController: UISearchController = {
+        
         let object = UISearchController(searchResultsController: nil)
         object.searchBar.placeholder = Localized.searchBar_placeholder.text
         object.searchBar.tintColor = Color.primaryBlue

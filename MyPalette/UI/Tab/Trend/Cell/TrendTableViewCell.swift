@@ -12,7 +12,6 @@ final class TrendTableViewCell: UITableViewCell {
     
     private let trendTypeLabel = {
         let object = UILabel()
-        object.text = "비즈니스 및 업무"
         object.font = BaseFont.large.boldFont
         return object
     }()
@@ -54,5 +53,9 @@ final class TrendTableViewCell: UITableViewCell {
             make.bottom.equalToSuperview().offset(-12)
             make.top.equalTo(trendTypeLabel.snp.bottom).offset(12)
         }
+    }
+    
+    public func setTitle(_ title: String){
+        trendTypeLabel.text = title
     }
 }

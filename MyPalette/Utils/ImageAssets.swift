@@ -12,7 +12,7 @@ struct ImageAssets {
     
     //launch
     static let launchTitle = UIImage(named: "launch")
-    static let launch = UIImage(named: "launchImage")
+    static let launch = UIImage(named: "launchMainImage")
     
     //tabBarIcon
     static let trend = UIImage(named: "tab_trend")
@@ -24,6 +24,10 @@ struct ImageAssets {
     static let leftArrow = UIImage(systemName: "chevron.left")
     static let camera = UIImage(systemName: "camera.fill")
     static let star = UIImage(systemName: "star.fill")
+    
+    //like Button
+    static let likeButton = UIImage(named: "like")
+    static let likeButtonInActive = UIImage(named: "like_inactive")
     
     //saveButton
     static let saveButtonActive = UIImage(named: "like_circle")

@@ -36,6 +36,17 @@ enum Localized {
     case search_result_init
     case search_result_empty
     
+    //topic
+    case goldenHour
+    case businessAndWork
+    case architectureAndInterior
+    
+    //detail
+    case info
+    case size
+    case views
+    case downloads
+    
     var title: String {
         switch self {
         case .start:
@@ -54,6 +65,18 @@ enum Localized {
             return "EDIT PROFILE"
         case .save_button:
             return "저장"
+        case .goldenHour:
+            return "골든 아워"
+        case .businessAndWork:
+            return "비즈니스 및 업무"
+        case .architectureAndInterior:
+            return "건축 및 인테리어"
+        case .size:
+            return "크기"
+        case .views:
+            return "조회수"
+        case .downloads:
+            return "다운로드"
         default:
             return ""
         }
@@ -81,6 +104,8 @@ enum Localized {
             return "사진을 검색해보세요."
         case .search_result_empty:
             return "검색 결과가 없어요."
+        case .info:
+            return "정보"
         default:
             return ""
         }

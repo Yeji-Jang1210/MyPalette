@@ -10,16 +10,16 @@ import SnapKit
 
 class PhotoCollectionViewCell: UICollectionViewCell {
     
-    private let imageView = {
+    let imageView = {
         let object = UIImageView()
         object.contentMode = .scaleAspectFill
         object.clipsToBounds = true
-        object.backgroundColor = .red
         return object
     }()
     
     var cornerRadius: CGFloat = 0 {
         didSet {
+            imageView.layoutIfNeeded()
             imageView.layer.cornerRadius = cornerRadius
         }
     }

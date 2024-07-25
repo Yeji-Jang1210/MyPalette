@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 final class TrendCollectionViewCell: PhotoCollectionViewCell {
     
@@ -33,7 +34,14 @@ final class TrendCollectionViewCell: PhotoCollectionViewCell {
         cornerRadius = 20
     }
     
-    public func setData(){
-        likedView.count = Int.random(in: 10000...88888)
+    public func setData(_ photo: Photo){
+        if let url = URL(string: photo.urls.raw) {
+            let processor = DownsamplingImageProcessor(size: imageView.frame.size)
+            imageView.kf.indicatorType = .activity
+            imageView.kf.setImage(with: url,
+                                  placeholder: nil,
+                                  options: [.transition(.fade(1)), .forceTransition, .processor(processor)], completionHandler: nil)
+            likedView.count = photo.likes
+        }
     }
 }
