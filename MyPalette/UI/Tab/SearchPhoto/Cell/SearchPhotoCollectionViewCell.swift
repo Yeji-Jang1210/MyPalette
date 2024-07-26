@@ -6,12 +6,13 @@
 //
 
 import UIKit
+import Kingfisher
 import SnapKit
 
 final class SearchPhotoCollectionViewCell: PhotoCollectionViewCell {
     
     private let likedView = LikedView()
-    private let saveButton = {
+    let saveButton = {
         let object = UIButton()
         object.setImage(ImageAssets.saveButtonActive, for: .selected)
         object.setImage(ImageAssets.saveButtonInActive, for: .normal)
@@ -41,8 +42,17 @@ final class SearchPhotoCollectionViewCell: PhotoCollectionViewCell {
         }
     }
     
-    func setData(isSelected: Bool){
-        likedView.count = Int.random(in: 10000...88888)
+    func setData(photo: Photo, isSelected: Bool){
+        if let url = URL(string: photo.urls.small) {
+            let processor = DownsamplingImageProcessor(size: imageView.frame.size)
+            imageView.kf.indicatorType = .activity
+            imageView.kf.setImage(with: url,
+                                  placeholder: nil,
+                                  options: [ .processor(processor)], completionHandler: nil)
+            likedView.count = photo.likes
+        }
+        
         saveButton.isSelected = isSelected
+        
     }
 }

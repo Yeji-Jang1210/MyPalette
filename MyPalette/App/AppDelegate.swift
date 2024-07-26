@@ -21,16 +21,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.resignOnTouchOutside = true
         
-        //IQKeyboardManager.shared.toolbarConfiguration.tintColor = Color.primaryOrange
-        //IQKeyboardManager.shared.toolbarConfiguration.barTintColor = Color.white
+        print(Realm.Configuration.defaultConfiguration.fileURL!)
         
-//        print(Realm.Configuration.defaultConfiguration.fileURL!)
+        let config = Realm.Configuration(schemaVersion: 0){ migration, oldSchemaVersion in
+            
+        }
         
-//        let config = Realm.Configuration(schemaVersion: 0){ migration, oldSchemaVersion in
-//            
-//        }
-//        
-//        Realm.Configuration.defaultConfiguration = config
+        Realm.Configuration.defaultConfiguration = config
         
         return true
     }

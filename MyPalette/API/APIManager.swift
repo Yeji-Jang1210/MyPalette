@@ -11,8 +11,9 @@ import Alamofire
 enum APIManager {
     case topic(id: String)
     case statistics(id: String)
-    case search(query: String, page: Int, orderBy: String)
+    case search(param: SearchParameter)
     case random
+    case getPhoto(id: String)
 }
 
 extension APIManager {
@@ -35,6 +36,8 @@ extension APIManager {
             return "/search/photos"
         case .random:
             return "/photos/random"
+        case .getPhoto(let id):
+            return "/photos/\(id)"
         }
     }
     
@@ -50,11 +53,11 @@ extension APIManager {
     
     var parameters: Parameters? {
         switch self {
-        case .search(let query, let page, let orderBy):
+        case .search(let param):
             return [
-                "query": query,
-                "order_by": orderBy,
-                "page": page,
+                "query": param.query,
+                "order_by": param.orderBy,
+                "page": param.page,
                 "per_page": 20
             ]
         default:

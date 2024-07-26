@@ -12,7 +12,7 @@ import Toast
 
 final class PhotoDetailVC: BaseVC {
     
-    private enum PhotoInfo: CaseIterable{
+    private enum PhotoInfo: CaseIterable {
         case size
         case views
         case downloads
@@ -32,8 +32,9 @@ final class PhotoDetailVC: BaseVC {
     private lazy var scrollView = UIScrollView()
     private var contentView = UIView()
     
-    private let profileView = {
+    private lazy var profileView = {
        let object = UserProfileView()
+        object.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         return object
     }()
     
@@ -77,7 +78,7 @@ final class PhotoDetailVC: BaseVC {
     
     init(photo: Photo){
         viewModel = PhotoDetailVM(photo: photo)
-        super.init()
+        super.init(isChild: true)
     }
     
     override func viewDidLoad() {
@@ -95,7 +96,7 @@ final class PhotoDetailVC: BaseVC {
         contentView.addSubview(photoImageView)
     }
     
-    func configureStackView(){
+    private func configureStackView(){
         let verticalStackView = UIStackView()
         verticalStackView.axis = .vertical
         verticalStackView.spacing = 10
@@ -182,6 +183,20 @@ final class PhotoDetailVC: BaseVC {
             guard let self, let path else { return }
             setPhotoImageView(path: path)
         }
+        
+        viewModel.outputPhotoIsSaved.bind { [weak self] isSaved in
+            guard let self, let isSaved else { return }
+            
+            profileView.saveButton.isSelected = isSaved
+        }
+        
+        viewModel.outputPresentToastMessage.bind { [weak self] message in
+            guard let self, let message else { return }
+            
+            DispatchQueue.main.async {
+                self.view.makeToast(message)
+            }
+        }
     }
     
     private func setPhotoImageView(path: String){
@@ -197,5 +212,11 @@ final class PhotoDetailVC: BaseVC {
                 view.makeToast("이미지를 불러오는데 실패했습니다.")
             }
         }
+    }
+    
+    @objc
+    func saveButtonTapped(_ sender: UIButton){
+        sender.isSelected.toggle()
+        viewModel.inputSaveButtonTappedTrigger.value = sender.isSelected
     }
 }

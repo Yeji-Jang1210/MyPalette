@@ -7,9 +7,8 @@
 
 import UIKit
 
-extension UIViewController {
-    func saveImageToDocument(image: UIImage, filename: String) {
-        
+extension FileManager {
+    static func saveImageToDocument(image: UIImage, filename: String) {
         guard let documentDirectory = FileManager.default.urls(
             for: .documentDirectory,
             in: .userDomainMask).first else { return }
@@ -28,7 +27,7 @@ extension UIViewController {
         }
     }
     
-    func loadImageToDocument(filename: String) -> UIImage? {
+    static func loadImageToDocument(filename: String) -> UIImage? {
         
         guard let documentDirectory = FileManager.default.urls(
             for: .documentDirectory,
@@ -45,7 +44,7 @@ extension UIViewController {
         
     }
     
-    func removeImageFromDocument(filename: String) {
+    static func removeImageFromDocument(filename: String) {
         guard let documentDirectory = FileManager.default.urls(
             for: .documentDirectory,
             in: .userDomainMask).first else { return }

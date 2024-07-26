@@ -36,7 +36,7 @@ final class UserProfileView: UIView {
         return object
     }()
     
-    let likeButton = {
+    let saveButton = {
         let object = UIButton()
         object.setImage(ImageAssets.likeButtonInActive, for: .normal)
         object.setImage(ImageAssets.likeButton, for: .selected)
@@ -79,7 +79,7 @@ final class UserProfileView: UIView {
         stackView.addArrangedSubview(userNameLabel)
         stackView.addArrangedSubview(updateDateLabel)
         
-        addSubview(likeButton)
+        addSubview(saveButton)
     }
     
     private func configureLayout(){
@@ -99,7 +99,7 @@ final class UserProfileView: UIView {
             make.leading.equalTo(profileImageView.snp.trailing).offset(12)
         }
         
-        likeButton.snp.makeConstraints { make in
+        saveButton.snp.makeConstraints { make in
             make.size.equalTo(40)
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().offset(-12)

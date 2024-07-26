@@ -47,6 +47,13 @@ enum Localized {
     case views
     case downloads
     
+    //search
+    case save_select_message
+    case save_unselect_message
+    
+    //save
+    case save_list_isEmpty
+    
     var title: String {
         switch self {
         case .start:
@@ -106,13 +113,22 @@ enum Localized {
             return "검색 결과가 없어요."
         case .info:
             return "정보"
+        case .save_list_isEmpty:
+            return "저장된 사진이 없어요:("
         default:
             return ""
         }
     }
     
     var message: String {
-        return ""
+        switch self {
+        case .save_select_message:
+            return "저장되었습니다."
+        case .save_unselect_message:
+            return "삭제되었습니다."
+        default:
+            return ""
+        }
     }
     
     var confirm: String {

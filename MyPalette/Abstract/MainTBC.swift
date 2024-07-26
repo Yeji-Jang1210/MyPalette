@@ -50,7 +50,7 @@ class MainTBC: UITabBarController {
             case .searchPhoto:
                 return UINavigationController(rootViewController: SearchPhotoVC(title: self.title))
             case .like:
-                return UINavigationController(rootViewController: LikeVC(title: self.title))
+                return UINavigationController(rootViewController: SavedPhotoVC(title: self.title))
             }
         }
     }
