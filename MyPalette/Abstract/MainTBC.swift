@@ -9,7 +9,7 @@ import UIKit
 
 class MainTBC: UITabBarController {
     
-    enum Tab: Int, CaseIterable {
+    private enum Tab: Int, CaseIterable {
         case trend
         case randomPhoto
         case searchPhoto

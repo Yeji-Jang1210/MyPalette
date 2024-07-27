@@ -24,6 +24,7 @@ enum Localized {
     case user_info_saved_error
     case delete_user
     case delete_user_dlg
+    case mbti
     
     //nickname Error
     case nickname_range_error
@@ -90,6 +91,8 @@ enum Localized {
             return "다운로드"
         case .delete_user, .delete_user_dlg:
             return "회원탈퇴"
+        case .mbti:
+            return "MBTI"
         default:
             return ""
         }

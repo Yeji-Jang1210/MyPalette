@@ -127,8 +127,4 @@ final class SearchPhotoVM: BaseVM {
             }
         }
     }
-    
-    public func photoIsSaved(_ photoId: String) -> Bool{
-        return SavePhotoRepository.shared.findPhoto(photoId)
-    }
 }

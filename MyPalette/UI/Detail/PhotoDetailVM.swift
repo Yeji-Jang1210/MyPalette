@@ -69,7 +69,7 @@ final class PhotoDetailVM: BaseVM {
         inputViewWillAppearTrigger.bind { [weak self] trigger in
             guard let self, trigger != nil, let photo = photo else { return }
             
-            outputPhotoIsSaved.value = photoIsSaved(photo.id)
+            outputPhotoIsSaved.value = SavePhotoRepository.shared.findPhoto(photo.id)
         }
     }
     
@@ -84,9 +84,5 @@ final class PhotoDetailVM: BaseVM {
                 print(error)
             }
         }
-    }
-    
-    public func photoIsSaved(_ photoId: String) -> Bool{
-        return SavePhotoRepository.shared.findPhoto(photoId)
     }
 }

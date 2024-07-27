@@ -55,5 +55,10 @@ class User {
         nickname = ""
         profileImageId = nil
         signupDate = nil
+        
+        
+        print(User.shared.nickname)
+        print(User.shared.profileImageId)
+        print(User.shared.signupDateText)
     }
 }

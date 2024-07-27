@@ -17,15 +17,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
         
-        //User.shared.delete()
+        print(User.shared.nickname)
+        print(User.shared.profileImageId)
+        print(User.shared.signupDateText)
         
         if User.shared.nickname.isEmpty {
             let nvc = UINavigationController(rootViewController: OnboardingVC())
             window?.rootViewController = nvc
         } else {
-            print(User.shared.nickname)
-            print(User.shared.profileImageId)
-            print(User.shared.signupDateText)
             let vc = MainTBC()
             window?.rootViewController = vc
         }

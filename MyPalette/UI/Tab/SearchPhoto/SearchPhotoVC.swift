@@ -186,7 +186,7 @@ extension SearchPhotoVC: UICollectionViewDelegate, UICollectionViewDataSource, U
         cell.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         
         let photo = viewModel.outputSearchResult.value[indexPath.row]
-        cell.setData(photo: photo, isSelected: viewModel.photoIsSaved(photo.id))
+        cell.setData(photo: photo, isSelected: SavePhotoRepository.shared.findPhoto(photo.id))
         return cell
     }
     

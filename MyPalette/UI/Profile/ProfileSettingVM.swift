@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 enum ValidateNicknameStatus {
     case invalid_nickname
@@ -77,6 +78,7 @@ final class ProfileSettingVM: BaseVM {
         inputDeleteUserTrigger.bind { [weak self] trigger in
             guard let self, trigger != nil else { return }
             
+            deletePhotos()
             User.shared.delete()
             SavePhotoRepository.shared.deleteAll { [weak self] result in
                 guard let self else { return }
@@ -135,5 +137,15 @@ final class ProfileSettingVM: BaseVM {
         User.shared.nickname = nickname
         User.shared.profileImageId = outputImageNum.value
         completion(true)
+    }
+    
+    func deletePhotos(){
+        let photos = SavePhotoRepository.shared.fetchPhotos()
+        for id in photos.map({ $0.photoId }) {
+            DispatchQueue.global().async {
+                FileManager.removeImageFromDocument(filename: id)
+            }
+        }
+        
     }
 }

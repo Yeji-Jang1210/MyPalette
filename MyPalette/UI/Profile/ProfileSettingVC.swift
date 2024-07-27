@@ -63,6 +63,26 @@ final class ProfileSettingVC: BaseVC, SendProfileImageId {
         return object
     }()
     
+    let mbtiLabel = {
+        let object = UILabel()
+        object.text = Localized.mbti.title
+        object.font = BaseFont.large.boldFont
+        return object
+    }()
+    
+    private lazy var collectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 10
+        layout.minimumInteritemSpacing = 10
+        layout.scrollDirection = .horizontal
+        
+        let object = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        object.delegate = self
+        object.dataSource = self
+        object.register(MBTICollectionViewCell.self, forCellWithReuseIdentifier: MBTICollectionViewCell.identifier)
+        return object
+    }()
+    
     //MARK: - properties
     private let viewModel = ProfileSettingVM()
     private let type: ProfileVCType
@@ -87,6 +107,8 @@ final class ProfileSettingVC: BaseVC, SendProfileImageId {
         view.addSubview(nicknameStatusLabel)
         view.addSubview(completeButton)
         view.addSubview(deleteUserButton)
+        view.addSubview(mbtiLabel)
+        view.addSubview(collectionView)
     }
     
     override func configureLayout(){
@@ -113,13 +135,25 @@ final class ProfileSettingVC: BaseVC, SendProfileImageId {
         }
         
         completeButton.snp.makeConstraints { make in
-            make.top.equalTo(nicknameStatusLabel.snp.bottom).offset(20)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
             make.horizontalEdges.equalTo(separatorLine.snp.horizontalEdges)
             make.height.equalTo(BaseButtonStyle.primary.height)
         }
         
         deleteUserButton.snp.makeConstraints { make in
             make.centerX.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        mbtiLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(view.safeAreaLayoutGuide)
+            make.leading.equalTo(separatorLine.snp.leading)
+        }
+        
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(mbtiLabel.snp.top)
+            make.trailing.equalTo(separatorLine.snp.trailing)
+            make.leading.equalTo(mbtiLabel.snp.trailing).offset(60)
+            make.height.equalTo(120)
         }
     }
     
@@ -220,11 +254,37 @@ final class ProfileSettingVC: BaseVC, SendProfileImageId {
         }
     }
     
-    @objc func nicknameTextChanged(_ sender: UITextField) {
+    @objc 
+    func nicknameTextChanged(_ sender: UITextField) {
         viewModel.inputNickname.value = sender.text
+    }
+    
+    @objc
+    func mbtiButtonTapped(_ sender: CircleButton){
+        sender.isSelected.toggle()
     }
     
     func dataSend(id: Int) {
         viewModel.inputImageNum.value = id
+    }
+}
+
+extension ProfileSettingVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return MBTI.allCases.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MBTICollectionViewCell.identifier, for: indexPath) as! MBTICollectionViewCell
+        cell.mbtiButton.tag = indexPath.row
+        cell.setTitle(title: MBTI.allCases[indexPath.row].rawValue)
+        cell.mbtiButton.addTarget(self, action: #selector(mbtiButtonTapped), for: .touchUpInside)
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = (collectionView.bounds.width - 30) / 4
+        return CGSize(width: width, height: width)
     }
 }
