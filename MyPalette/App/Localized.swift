@@ -22,6 +22,8 @@ enum Localized {
     case profile_edit
     case nickname_placeholder
     case user_info_saved_error
+    case delete_user
+    case delete_user_dlg
     
     //nickname Error
     case nickname_range_error
@@ -50,6 +52,8 @@ enum Localized {
     //search
     case save_select_message
     case save_unselect_message
+    case relevant
+    case latest
     
     //save
     case save_list_isEmpty
@@ -65,7 +69,7 @@ enum Localized {
         case .searchPhoto:
             return "SEARCH PHOTO"
         case .like:
-            return "MY POLAROID"
+            return "\(User.shared.nickname)'S POLAROID"
         case .profile_setting:
             return "PROFILE SETTING"
         case .profile_edit:
@@ -84,6 +88,8 @@ enum Localized {
             return "조회수"
         case .downloads:
             return "다운로드"
+        case .delete_user, .delete_user_dlg:
+            return "회원탈퇴"
         default:
             return ""
         }
@@ -115,6 +121,10 @@ enum Localized {
             return "정보"
         case .save_list_isEmpty:
             return "저장된 사진이 없어요:("
+        case .latest:
+            return "최신순"
+        case .relevant:
+            return "관련순"
         default:
             return ""
         }
@@ -126,16 +136,28 @@ enum Localized {
             return "저장되었습니다."
         case .save_unselect_message:
             return "삭제되었습니다."
+        case .delete_user_dlg:
+            return "탈퇴하시겠습니까?\n저장된 정보는 삭제됩니다."
         default:
             return ""
         }
     }
     
     var confirm: String {
-        return ""
+        switch self {
+        case .delete_user_dlg:
+            return "탈퇴"
+        default:
+            return ""
+        }
     }
     
     var cancel: String {
-        return ""
+        switch self {
+        case .delete_user_dlg:
+            return "취소"
+        default:
+            return ""
+        }
     }
 }

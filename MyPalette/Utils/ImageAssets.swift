@@ -24,6 +24,7 @@ struct ImageAssets {
     static let leftArrow = UIImage(systemName: "chevron.left")
     static let camera = UIImage(systemName: "camera.fill")
     static let star = UIImage(systemName: "star.fill")
+    static let sort = UIImage(named: "sort")
     
     //like Button
     static let likeButton = UIImage(named: "like")

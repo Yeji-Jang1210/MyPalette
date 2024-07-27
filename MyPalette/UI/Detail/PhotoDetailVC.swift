@@ -85,6 +85,11 @@ final class PhotoDetailVC: BaseVC {
         super.viewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.inputViewWillAppearTrigger.value = ()
+    }
+    
     override func configureHierarchy() {
         super.configureHierarchy()
         view.addSubview(scrollView)

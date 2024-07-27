@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol ReceiveUserInfoDelegate {
+    func dataReceived()
+}
+
 final class TrendVC: BaseVC {
     
     private let headerView = {
@@ -104,7 +108,9 @@ final class TrendVC: BaseVC {
     
     @objc
     func profileButtonTapped() {
-        print(#function)
+        let vc = ProfileSettingVC(type: .edit)
+        vc.delegate = self
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -158,5 +164,11 @@ extension TrendVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColle
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let cell = cell as! TrendCollectionViewCell
         cell.imageView.kf.cancelDownloadTask()
+    }
+}
+
+extension TrendVC: ReceiveUserInfoDelegate {
+    func dataReceived() {
+        viewModel.inputProfileEditSucceed.value = ()
     }
 }

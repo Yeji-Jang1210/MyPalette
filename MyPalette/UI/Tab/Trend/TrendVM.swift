@@ -40,6 +40,7 @@ final class TrendVM: BaseVM {
     
     var inputProfileImageNum: Observable<Int?> = Observable(User.shared.profileImageId)
     var inputViewWillAppearTrigger: Observable<Void?> = Observable(nil)
+    var inputProfileEditSucceed: Observable<Void?> = Observable(nil)
     
     var outputProfileImageNum: Observable<Int?> = Observable(nil)
     var outputPhotoList: Observable<[[Photo]]> = Observable(Array(repeating: [], count: Topics.allCases.count))
@@ -49,13 +50,18 @@ final class TrendVM: BaseVM {
         super.bind()
         
         inputViewWillAppearTrigger.bind { [weak self] trigger in
-            guard let self, let trigger else { return }
+            guard let self, trigger != nil else { return }
             fetchData()
         }
         
         inputProfileImageNum.bind { [weak self] num in
             guard let self, let num else { return }
             outputProfileImageNum.value = num
+        }
+        
+        inputProfileEditSucceed.bind { [weak self] trigger in
+            guard let self, trigger != nil else { return }
+            outputProfileImageNum.value = User.shared.profileImageId
         }
     }
     

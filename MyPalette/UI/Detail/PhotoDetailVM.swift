@@ -8,16 +8,15 @@
 import Foundation
 
 final class PhotoDetailVM: BaseVM {
-    var inputPhoto: Observable<Photo?> = Observable(nil)
-    var inputSetImageSuccessTrigger: Observable<Void?> = Observable(nil)
-    var inputSaveButtonTappedTrigger: Observable<Bool?> = Observable(nil)
-    
-    var outputPhoto: Observable<Photo?> = Observable(nil)
-    var outputSetPhotoImageTrigger: Observable<String?> = Observable(nil)
-    var outputStatistics: Observable<PhotoStatistics?> = Observable(nil)
-    var outputPhotoIsSaved: Observable<Bool?> = Observable(nil)
-    var outputPresentToastMessage: Observable<String?> = Observable(nil)
-    
+    var inputPhoto = Observable<Photo?>(nil)
+    var inputSetImageSuccessTrigger = Observable<Void?>(nil)
+    var inputSaveButtonTappedTrigger = Observable<Bool?> (nil)
+    var inputViewWillAppearTrigger = Observable<Void?>(nil)
+    var outputPhoto = Observable<Photo?>(nil)
+    var outputSetPhotoImageTrigger = Observable<String?>(nil)
+    var outputStatistics = Observable<PhotoStatistics?>(nil)
+    var outputPhotoIsSaved = Observable<Bool?>(nil)
+    var outputPresentToastMessage = Observable<String?>(nil)
     
     var photo: Photo?
     var statistics: PhotoStatistics?
@@ -62,10 +61,15 @@ final class PhotoDetailVM: BaseVM {
                 }
                 
             } else {
-                FileManager.removeImageFromDocument(filename: photo.id)
                 SavePhotoRepository.shared.deletePhoto(photo.id)
                 outputPresentToastMessage.value = SavePhotoStatus.removed.message
             }
+        }
+        
+        inputViewWillAppearTrigger.bind { [weak self] trigger in
+            guard let self, trigger != nil, let photo = photo else { return }
+            
+            outputPhotoIsSaved.value = photoIsSaved(photo.id)
         }
     }
     
@@ -80,5 +84,9 @@ final class PhotoDetailVM: BaseVM {
                 print(error)
             }
         }
+    }
+    
+    public func photoIsSaved(_ photoId: String) -> Bool{
+        return SavePhotoRepository.shared.findPhoto(photoId)
     }
 }

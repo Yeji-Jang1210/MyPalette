@@ -51,9 +51,22 @@ final class ProfileSettingVC: BaseVC, SendProfileImageId {
         return object
     }()
     
+    lazy var deleteUserButton: UIButton = {
+        var config = UIButton.Configuration.plain()
+        config.background.backgroundColor = .clear
+        config.attributedTitle = AttributedString(Localized.delete_user.title,
+                                                  attributes: AttributeContainer([.font: BaseFont.mediumLarge.boldFont,.foregroundColor: Color.primaryBlue, .underlineStyle: NSUnderlineStyle.single.rawValue]))
+        let object = UIButton()
+        object.configuration = config
+        object.isHidden = true
+        object.addTarget(self, action: #selector(deleteUserButtonTapped), for: .touchUpInside)
+        return object
+    }()
+    
     //MARK: - properties
     private let viewModel = ProfileSettingVM()
     private let type: ProfileVCType
+    var delegate: ReceiveUserInfoDelegate?
     
     //MARK: - life cycle
     init(type: ProfileVCType){
@@ -63,6 +76,7 @@ final class ProfileSettingVC: BaseVC, SendProfileImageId {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     //MARK: - configure function
@@ -72,6 +86,7 @@ final class ProfileSettingVC: BaseVC, SendProfileImageId {
         view.addSubview(nicknameTextField)
         view.addSubview(nicknameStatusLabel)
         view.addSubview(completeButton)
+        view.addSubview(deleteUserButton)
     }
     
     override func configureLayout(){
@@ -102,6 +117,10 @@ final class ProfileSettingVC: BaseVC, SendProfileImageId {
             make.horizontalEdges.equalTo(separatorLine.snp.horizontalEdges)
             make.height.equalTo(BaseButtonStyle.primary.height)
         }
+        
+        deleteUserButton.snp.makeConstraints { make in
+            make.centerX.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
     }
     
     override func configureUI(){
@@ -110,6 +129,7 @@ final class ProfileSettingVC: BaseVC, SendProfileImageId {
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: Localized.save_button.title, style: .done, target: self, action: #selector(updateData))
             navigationItem.rightBarButtonItem?.tintColor = Color.black
             navigationItem.rightBarButtonItem?.tag = type.rawValue
+            deleteUserButton.isHidden = false
         }
     }
     
@@ -154,15 +174,27 @@ final class ProfileSettingVC: BaseVC, SendProfileImageId {
         viewModel.outputIsSaved.bind { [weak self] result in
             guard let self, let result else { return }
             if result {
+                delegate?.dataReceived()
                 navigationController?.popViewController(animated: true)
             } else {
                 view.makeToast(Localized.user_info_saved_error.text)
             }
         }
+        
+        viewModel.outputIsDeleteSucceeded.bind { [weak self] result in
+            guard let self, let result else { return }
+            
+            if result {
+                let nvc = UINavigationController(rootViewController: OnboardingVC())
+                changeRootViewController(nvc)
+            }
+        }
+        
     }
     
     //MARK: - function
-    @objc func characterViewTapped(){
+    @objc 
+    func characterViewTapped(){
         let vc = SelectCharacterVC(title: type.navTitle, isChild: true)
         //delegate 연결
         vc.delegate = self
@@ -177,6 +209,15 @@ final class ProfileSettingVC: BaseVC, SendProfileImageId {
     @objc
     func updateData(){
         viewModel.inputUpdateTrigger.value = ()
+    }
+    
+    @objc
+    func deleteUserButtonTapped(){
+        self.presentAlert(localized: Localized.delete_user_dlg) {
+            self.viewModel.inputDeleteUserTrigger.value = ()
+        } cancel: {
+            
+        }
     }
     
     @objc func nicknameTextChanged(_ sender: UITextField) {

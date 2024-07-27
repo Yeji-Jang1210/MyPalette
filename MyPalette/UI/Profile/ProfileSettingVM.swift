@@ -34,8 +34,9 @@ final class ProfileSettingVM: BaseVM {
     //MARK: - Input
     var inputNickname = Observable<String?>(User.shared.nickname)
     var inputImageNum = Observable<Int?>(User.shared.profileImageId)
-    var inputUpdateTrigger: Observable<Void?> = Observable(nil)
-    var inputSaveTrigger: Observable<Void?> = Observable(nil)
+    var inputUpdateTrigger = Observable<Void?>(nil)
+    var inputSaveTrigger = Observable<Void?>(nil)
+    var inputDeleteUserTrigger = Observable<Void?>(nil)
     
     //MARK: - Output
     var outputNickname = Observable<String?>(nil)
@@ -44,6 +45,7 @@ final class ProfileSettingVM: BaseVM {
     var outputImageNum = Observable<Int>(0)
     var outputIsUpdate = Observable<Bool?>(nil)
     var outputIsSaved = Observable<Bool?>(nil)
+    var outputIsDeleteSucceeded = Observable<Bool?>(nil)
     
     override func bind(){
         inputNickname.bind { [weak self] nickname in
@@ -60,8 +62,6 @@ final class ProfileSettingVM: BaseVM {
         inputImageNum.bind { [weak self] num in
             guard let self else { return }
             outputImageNum.value = num ?? Int.random(in: 0...Character.maxCount)
-            
-            
         }
         
         inputUpdateTrigger.bind { [weak self] trigger in
@@ -72,6 +72,16 @@ final class ProfileSettingVM: BaseVM {
         inputSaveTrigger.bind { [weak self] trigger in
             guard let self, trigger != nil else { return }
             createData()
+        }
+        
+        inputDeleteUserTrigger.bind { [weak self] trigger in
+            guard let self, trigger != nil else { return }
+            
+            User.shared.delete()
+            SavePhotoRepository.shared.deleteAll { [weak self] result in
+                guard let self else { return }
+                outputIsDeleteSucceeded.value = result
+            }
         }
     }
     
@@ -126,5 +136,4 @@ final class ProfileSettingVM: BaseVM {
         User.shared.profileImageId = outputImageNum.value
         completion(true)
     }
-    
 }

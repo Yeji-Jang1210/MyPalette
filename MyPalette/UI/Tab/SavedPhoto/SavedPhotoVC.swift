@@ -69,7 +69,7 @@ final class SavedPhotoVC: BaseVC {
         }
         
         viewModel.outputPresentToast.bind { [weak self] present in
-            guard let self, let present else { return }
+            guard let self, present != nil else { return }
             view.makeToast(Localized.save_unselect_message.message)
         }
         

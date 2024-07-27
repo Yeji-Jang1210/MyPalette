@@ -10,10 +10,9 @@ import RealmSwift
 
 protocol SavePhotoRepositoryProtocol {
     func savePhoto(_ photo: Photo)
-    
     func fetchPhotos() -> Results<SavedPhoto>
-    
     func deletePhoto(_ photoId: String)
+    func deleteAll(completion: @escaping (Bool) -> Void)
 }
 
 final class SavePhotoRepository: SavePhotoRepositoryProtocol {
@@ -44,6 +43,7 @@ final class SavePhotoRepository: SavePhotoRepositoryProtocol {
             $0.photoId == photoId
         }
         
+        FileManager.removeImageFromDocument(filename: photoId)
         try! realm.write{
             realm.delete(item)
         }
@@ -55,6 +55,17 @@ final class SavePhotoRepository: SavePhotoRepositoryProtocol {
         }
         
         return !item.isEmpty ? true : false
+    }
+    
+    func deleteAll(completion: @escaping (Bool) -> Void) {
+        do {
+            try realm.write{
+                realm.deleteAll()
+                completion(true)
+            }
+        } catch {
+            completion(false)
+        }
     }
     
 }

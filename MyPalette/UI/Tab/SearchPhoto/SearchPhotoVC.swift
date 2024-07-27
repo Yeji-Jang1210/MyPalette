@@ -56,6 +56,12 @@ final class SearchPhotoVC: BaseVC {
         return object
     }()
     
+    private lazy var filterButton: FilterButton = {
+        let object = FilterButton(selectTitle: SearchOrderType.latest.text, unselectTitle: SearchOrderType.relevant.text)
+        object.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+        return object
+    }()
+    
     private let viewModel = SearchPhotoVM()
     
     override func viewDidLoad() {
@@ -73,6 +79,7 @@ final class SearchPhotoVC: BaseVC {
         
         view.addSubview(collectionView)
         view.addSubview(emptyLabel)
+        view.addSubview(filterButton)
     }
     
     override func configureLayout() {
@@ -84,6 +91,11 @@ final class SearchPhotoVC: BaseVC {
         
         emptyLabel.snp.makeConstraints { make in
             make.center.equalTo(collectionView)
+        }
+        
+        filterButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(12)
         }
     }
     
@@ -125,12 +137,23 @@ final class SearchPhotoVC: BaseVC {
                 self.collectionView.reloadData()
             }
         }
+        
+        viewModel.outputOrderType.bind { [weak self] filter in
+            guard let self else { return }
+            filterButton.isSelected = filter == .latest ? true : false
+        }
     }
     
     @objc 
     func saveButtonTapped(_ sender: UIButton){
         sender.isSelected.toggle()
         viewModel.inputIsSaveButtonSelected.value = (sender.isSelected, sender.tag)
+    }
+    
+    @objc
+    func filterButtonTapped(_ sender: FilterButton){
+        print(#function)
+        viewModel.inputFiltering.value = !sender.isSelected ? .latest : .relevant
     }
 }
 

@@ -10,6 +10,15 @@ import Foundation
 enum SearchOrderType: String {
     case relevant
     case latest
+    
+    var text: String {
+        switch self {
+        case .relevant:
+            return Localized.relevant.text
+        case .latest:
+            return Localized.latest.text
+        }
+    }
 }
 
 enum SavePhotoStatus {
@@ -34,18 +43,19 @@ final class SearchPhotoVM: BaseVM {
     var inputSearchText: Observable<String?> = Observable(nil)
     var inputNextPageTrigger: Observable<Void?> = Observable(nil)
     var inputIsSaveButtonSelected: Observable<(Bool?, Int?)> = Observable((nil,nil))
+    var inputFiltering: Observable<SearchOrderType?> = Observable(nil)
     
     var outputSearchResult: Observable<[Photo]> = Observable([])
     var outputSearchResultStatus: Observable<SearchStatus> = Observable(.initialScreen)
     var outputPresentToastMessage: Observable<String?> = Observable(nil)
-
+    
     var text: String = ""
     var selectPhotoIndex: Int?
     var page: Int = 1
     
     private var totalPages: Int = 1
     
-    private var orderType: SearchOrderType = .relevant
+    var outputOrderType: Observable<SearchOrderType> = Observable(.relevant)
     var isEnd: Bool {
         return page < totalPages
     }
@@ -54,16 +64,17 @@ final class SearchPhotoVM: BaseVM {
         super.bind()
         inputSearchText.bind { [weak self] text in
             guard let self, let text else { return }
+            outputOrderType.value = .relevant
             page = 1
             totalPages = 1
             self.text = text
-            fetchSearchResult(query: text, page: page, orderBy: orderType)
+            fetchSearchResult()
         }
         
         inputNextPageTrigger.bind { [weak self] trigger in
             guard let self, trigger != nil else { return }
             page += 1
-            fetchSearchResult(query: text, page: page, orderBy: orderType)
+            fetchSearchResult()
         }
         
         inputIsSaveButtonSelected.bind { [weak self] isSelected, index in
@@ -82,15 +93,23 @@ final class SearchPhotoVM: BaseVM {
                 }
                 
             } else {
-                FileManager.removeImageFromDocument(filename: photo.id)
                 SavePhotoRepository.shared.deletePhoto(photo.id)
                 outputPresentToastMessage.value = SavePhotoStatus.removed.message
             }
         }
+        
+        inputFiltering.bind { [weak self] filter in
+            guard let self, let filter else { return }
+            
+            if !text.isEmpty {
+                outputOrderType.value = filter
+                fetchSearchResult()
+            }
+        }
     }
     
-    private func fetchSearchResult(query: String, page: Int, orderBy: SearchOrderType){
-        let param = SearchParameter(query: query, page: page, orderBy: orderBy.rawValue)
+    private func fetchSearchResult(){
+        let param = SearchParameter(query: text, page: page, orderBy: outputOrderType.value.rawValue)
         APIService.shared.networking(api: .search(param: param), of: SearchResponse.self) { [weak self] response in
             guard let self else { return }
             switch response {
