@@ -8,11 +8,25 @@
 import Foundation
 import RealmSwift
 
+enum SavedOrderType {
+    case latest
+    case oldest
+    
+    var text: String {
+        switch self {
+        case .latest:
+            Localized.latest.text
+        case .oldest:
+            Localized.oldest.text
+        }
+    }
+}
+
 final class SavedPhotoVM: BaseVM {
     
-    var inputViewAppearTrigger: Observable<Void?> = Observable(nil)
     var inputSaveButtonTapped: Observable<Int?> = Observable(nil)
     var inputTappedPhoto: Observable<Int?> = Observable(nil)
+    var inputOrderedPhoto: Observable<SavedOrderType?> = Observable(nil)
     
     var outputSavedPhotoList: Observable<Results<SavedPhoto>?> = Observable(nil)
     var outputPresentToast: Observable<Void?> = Observable(nil)
@@ -21,36 +35,27 @@ final class SavedPhotoVM: BaseVM {
     override func bind() {
         super.bind()
         
-        inputViewAppearTrigger.bind { [weak self] trigger in
-            guard let self, trigger != nil else { return }
-            
-            outputSavedPhotoList.value = SavePhotoRepository.shared.fetchPhotos()
+        inputOrderedPhoto.bind { [weak self] order in
+            guard let self, let order else { return }
+            outputSavedPhotoList.value = SavePhotoRepository.shared.sortSavedPhotos(order)
         }
         
         inputSaveButtonTapped.bind { [weak self] index in
             guard let self, let index, let id = outputSavedPhotoList.value?[index].photoId else { return }
             
             SavePhotoRepository.shared.deletePhoto(id)
-            outputSavedPhotoList.value = SavePhotoRepository.shared.fetchPhotos()
+            
+            if let order = inputOrderedPhoto.value {
+                outputSavedPhotoList.value = SavePhotoRepository.shared.sortSavedPhotos(order)
+            }
+            
             outputPresentToast.value = ()
         }
         
         inputTappedPhoto.bind { [weak self] index in
-            guard let self, let index, let id = outputSavedPhotoList.value?[index].photoId else { return }
+            guard let self, let index, let photo = outputSavedPhotoList.value?[index] else { return }
             
-            DispatchQueue.global().async {
-                APIService.shared.networking(api: .getPhoto(id: id), of: Photo.self) { [weak self] response in
-                    guard let self else { return }
-                    switch response {
-                    case .success(let photo):
-                        DispatchQueue.main.async {
-                            self.outputPhoto.value = photo
-                        }
-                    case .error(let error):
-                        print(error)
-                    }
-                }
-            }
+            outputPhoto.value = photo.convertSavedPhotoToPhoto()
         }
     }
     

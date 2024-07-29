@@ -43,6 +43,12 @@ final class UserProfileView: UIView {
         return object
     }()
     
+    var image: UIImage? = nil {
+        didSet {
+            profileImageView.image = image
+        }
+    }
+    
     var imagePath: String = "" {
         didSet {
             guard let url = URL(string: imagePath) else { return }

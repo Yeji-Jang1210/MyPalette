@@ -41,11 +41,14 @@ final class SavePhotoRepository: SavePhotoRepositoryProtocol {
     func deletePhoto(_ photoId: String) {
         let item = realm.objects(SavedPhoto.self).where {
             $0.photoId == photoId
-        }
+        }.first
         
-        FileManager.removeImageFromDocument(filename: photoId)
-        try! realm.write{
-            realm.delete(item)
+        if let item {
+            FileManager.removeImageFromDocument(filename: photoId)
+            FileManager.removeImageFromDocument(filename: item.userProfileImageName)
+            try! realm.write{
+                realm.delete(item)
+            }
         }
     }
     
@@ -68,4 +71,14 @@ final class SavePhotoRepository: SavePhotoRepositoryProtocol {
         }
     }
     
+    func sortSavedPhotos(_ type: SavedOrderType) -> Results<SavedPhoto>{
+        let list = realm.objects(SavedPhoto.self)
+        
+        switch type {
+        case .latest:
+            return list.sorted(byKeyPath: "savedDate", ascending: false)
+        case .oldest:
+            return list.sorted(byKeyPath: "savedDate", ascending: true)
+        }
+    }
 }

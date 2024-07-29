@@ -6,20 +6,18 @@
 //
 
 import Foundation
+import UIKit
 
 final class PhotoDetailVM: BaseVM {
     var inputPhoto = Observable<Photo?>(nil)
-    var inputSetImageSuccessTrigger = Observable<Void?>(nil)
     var inputSaveButtonTappedTrigger = Observable<Bool?> (nil)
     var inputViewWillAppearTrigger = Observable<Void?>(nil)
+    
     var outputPhoto = Observable<Photo?>(nil)
     var outputSetPhotoImageTrigger = Observable<String?>(nil)
     var outputStatistics = Observable<PhotoStatistics?>(nil)
     var outputPhotoIsSaved = Observable<Bool?>(nil)
     var outputPresentToastMessage = Observable<String?>(nil)
-    
-    var photo: Photo?
-    var statistics: PhotoStatistics?
     
     init(photo: Photo){
         self.inputPhoto.value = photo
@@ -32,30 +30,44 @@ final class PhotoDetailVM: BaseVM {
         inputPhoto.bind { [weak self] photo in
             guard let self, let photo else { return }
             
-            self.photo = photo
+            outputSetPhotoImageTrigger.value = photo.urls.raw
+            outputPhoto.value = photo
             outputPhotoIsSaved.value = SavePhotoRepository.shared.findPhoto(photo.id)
             DispatchQueue.global().async {
                 self.fetchStatistics(id: photo.id)
             }
         }
         
-        inputSetImageSuccessTrigger.bind { [weak self] trigger in
-            guard let self, trigger != nil else { return }
-            
-            outputPhoto.value = photo
-            outputStatistics.value = statistics
-        }
         
         inputSaveButtonTappedTrigger.bind { [weak self] isSelected in
-            guard let self, let isSelected, let photo = photo else { return }
+            guard let self, let isSelected, let photo = outputPhoto.value else { return }
             
             if isSelected {
+                let group = DispatchGroup()
+                
+                var mainPhoto: UIImage?
+                var profilePhoto: UIImage?
+                
+                group.enter()
                 photo.urls.raw.fetchImage { image in
-                    guard let image else {
+                    mainPhoto = image
+                    group.leave()
+                }
+                
+                group.enter()
+                photo.user.profileImage.medium.fetchImage { image in
+                    profilePhoto = image
+                    group.leave()
+                }
+                
+                group.notify(queue: .main) {
+                    guard let mainPhoto, let profilePhoto else {
                         self.outputPresentToastMessage.value = SavePhotoStatus.error.message
                         return
                     }
-                    FileManager.saveImageToDocument(image: image, filename: photo.id)
+                    
+                    FileManager.saveImageToDocument(image: mainPhoto, filename: photo.id)
+                    FileManager.saveImageToDocument(image: profilePhoto, filename: photo.userProfileImageName)
                     SavePhotoRepository.shared.savePhoto(photo)
                     self.outputPresentToastMessage.value = SavePhotoStatus.saved.message
                 }
@@ -67,7 +79,7 @@ final class PhotoDetailVM: BaseVM {
         }
         
         inputViewWillAppearTrigger.bind { [weak self] trigger in
-            guard let self, trigger != nil, let photo = photo else { return }
+            guard let self, trigger != nil, let photo = outputPhoto.value else { return }
             
             outputPhotoIsSaved.value = SavePhotoRepository.shared.findPhoto(photo.id)
         }
@@ -78,9 +90,9 @@ final class PhotoDetailVM: BaseVM {
             guard let self else { return }
             switch response {
             case .success(let result):
-                statistics = result
-                outputSetPhotoImageTrigger.value = photo?.urls.raw
+                outputStatistics.value = result
             case .error(let error):
+                print(error)
                 outputSetPhotoImageTrigger.value = nil
                 outputPresentToastMessage.value = "네트워크 연결에 실패했습니다."
             }

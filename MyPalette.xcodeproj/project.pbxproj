@@ -21,7 +21,7 @@
 		B8A42C132C53738300FA0D54 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A42C122C53738300FA0D54 /* String+Extension.swift */; };
 		B8A42C1A2C53899900FA0D54 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B8A42C192C53899900FA0D54 /* RealmSwift */; };
 		B8A42C1B2C5389A700FA0D54 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = B8A42C192C53899900FA0D54 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		B8A42C1D2C539BF000FA0D54 /* FilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A42C1C2C539BF000FA0D54 /* FilterButton.swift */; };
+		B8A42C1D2C539BF000FA0D54 /* SelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A42C1C2C539BF000FA0D54 /* SelectionButton.swift */; };
 		B8A42C202C54DCB400FA0D54 /* Topics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A42C1F2C54DCB400FA0D54 /* Topics.swift */; };
 		B8A42C222C55448700FA0D54 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A42C212C55448700FA0D54 /* CircleView.swift */; };
 		B8A42C242C554B7500FA0D54 /* MBTI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A42C232C554B7500FA0D54 /* MBTI.swift */; };
@@ -50,7 +50,7 @@
 		B8DE64F02C4E44A60054E882 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DE64EF2C4E44A60054E882 /* FileManager.swift */; };
 		B8DE64F22C4E44F30054E882 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DE64F12C4E44F30054E882 /* Observable.swift */; };
 		B8DE64F42C4E45090054E882 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DE64F32C4E45090054E882 /* Character.swift */; };
-		B8DE64F62C4E459C0054E882 /* ButtonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DE64F52C4E459C0054E882 /* ButtonType.swift */; };
+		B8DE64F62C4E459C0054E882 /* BaseButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DE64F52C4E459C0054E882 /* BaseButtonStyle.swift */; };
 		B8DE64F82C4E45BD0054E882 /* BaseFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DE64F72C4E45BD0054E882 /* BaseFont.swift */; };
 		B8DE64FF2C4E48BC0054E882 /* TrendVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DE64FE2C4E48BC0054E882 /* TrendVC.swift */; };
 		B8DE65012C4E48C30054E882 /* RandomPhotoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DE65002C4E48C30054E882 /* RandomPhotoVC.swift */; };
@@ -105,7 +105,7 @@
 		B8A42C0E2C535ED500FA0D54 /* SavedPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedPhoto.swift; sourceTree = "<group>"; };
 		B8A42C102C5363E200FA0D54 /* SavedPhotoVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedPhotoVM.swift; sourceTree = "<group>"; };
 		B8A42C122C53738300FA0D54 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
-		B8A42C1C2C539BF000FA0D54 /* FilterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButton.swift; sourceTree = "<group>"; };
+		B8A42C1C2C539BF000FA0D54 /* SelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionButton.swift; sourceTree = "<group>"; };
 		B8A42C1F2C54DCB400FA0D54 /* Topics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Topics.swift; sourceTree = "<group>"; };
 		B8A42C212C55448700FA0D54 /* CircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
 		B8A42C232C554B7500FA0D54 /* MBTI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBTI.swift; sourceTree = "<group>"; };
@@ -131,7 +131,7 @@
 		B8DE64EF2C4E44A60054E882 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		B8DE64F12C4E44F30054E882 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		B8DE64F32C4E45090054E882 /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
-		B8DE64F52C4E459C0054E882 /* ButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonType.swift; sourceTree = "<group>"; };
+		B8DE64F52C4E459C0054E882 /* BaseButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseButtonStyle.swift; sourceTree = "<group>"; };
 		B8DE64F72C4E45BD0054E882 /* BaseFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseFont.swift; sourceTree = "<group>"; };
 		B8DE64FE2C4E48BC0054E882 /* TrendVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendVC.swift; sourceTree = "<group>"; };
 		B8DE65002C4E48C30054E882 /* RandomPhotoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomPhotoVC.swift; sourceTree = "<group>"; };
@@ -199,7 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				B8A42C1F2C54DCB400FA0D54 /* Topics.swift */,
-				B8DE64F52C4E459C0054E882 /* ButtonType.swift */,
+				B8DE64F52C4E459C0054E882 /* BaseButtonStyle.swift */,
 				B8A42C232C554B7500FA0D54 /* MBTI.swift */,
 				B88860CE2C577A390004542E /* ValidateNicknameStatus.swift */,
 			);
@@ -299,7 +299,7 @@
 				B8DE65502C4F9D8A0054E882 /* PhotoCollectionViewCell.swift */,
 				B8DE65592C4FF24E0054E882 /* LikedView.swift */,
 				B8A42BE72C51D67A00FA0D54 /* UserProfileView.swift */,
-				B8A42C1C2C539BF000FA0D54 /* FilterButton.swift */,
+				B8A42C1C2C539BF000FA0D54 /* SelectionButton.swift */,
 				B8A42C212C55448700FA0D54 /* CircleView.swift */,
 			);
 			path = Custom;
@@ -527,7 +527,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8DE64AC2C4E3E5A0054E882 /* AppDelegate.swift in Sources */,
-				B8A42C1D2C539BF000FA0D54 /* FilterButton.swift in Sources */,
+				B8A42C1D2C539BF000FA0D54 /* SelectionButton.swift in Sources */,
 				B8DE64F22C4E44F30054E882 /* Observable.swift in Sources */,
 				B8DE64EE2C4E447B0054E882 /* UIViewController+Extension.swift in Sources */,
 				B8DE64F82C4E45BD0054E882 /* BaseFont.swift in Sources */,
@@ -573,7 +573,7 @@
 				B8A42C0D2C535DD000FA0D54 /* SavePhotoRepository.swift in Sources */,
 				B8DE64AE2C4E3E5A0054E882 /* SceneDelegate.swift in Sources */,
 				B8DE65512C4F9D8A0054E882 /* PhotoCollectionViewCell.swift in Sources */,
-				B8DE64F62C4E459C0054E882 /* ButtonType.swift in Sources */,
+				B8DE64F62C4E459C0054E882 /* BaseButtonStyle.swift in Sources */,
 				B8DE650B2C4E4A920054E882 /* ProfileSettingVM.swift in Sources */,
 				B8A42BE82C51D67A00FA0D54 /* UserProfileView.swift in Sources */,
 				B8DE64DF2C4E42890054E882 /* OnboardingVC.swift in Sources */,

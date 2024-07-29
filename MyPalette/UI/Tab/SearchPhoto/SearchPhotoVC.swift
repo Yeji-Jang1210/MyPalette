@@ -56,9 +56,9 @@ final class SearchPhotoVC: BaseVC {
         return object
     }()
     
-    private lazy var filterButton: FilterButton = {
-        let object = FilterButton(selectTitle: SearchOrderType.latest.text, unselectTitle: SearchOrderType.relevant.text)
-        object.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+    private lazy var orderedButton: SelectionButton = {
+        let object = SelectionButton(selectTitle: SearchOrderType.latest.text, unselectTitle: SearchOrderType.relevant.text)
+        object.addTarget(self, action: #selector(orderedButtonTapped), for: .touchUpInside)
         return object
     }()
     
@@ -79,7 +79,7 @@ final class SearchPhotoVC: BaseVC {
         
         view.addSubview(collectionView)
         view.addSubview(emptyLabel)
-        view.addSubview(filterButton)
+        view.addSubview(orderedButton)
     }
     
     override func configureLayout() {
@@ -93,7 +93,7 @@ final class SearchPhotoVC: BaseVC {
             make.center.equalTo(collectionView)
         }
         
-        filterButton.snp.makeConstraints { make in
+        orderedButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.trailing.equalTo(view.safeAreaLayoutGuide).offset(12)
         }
@@ -140,7 +140,7 @@ final class SearchPhotoVC: BaseVC {
         
         viewModel.outputOrderType.bind { [weak self] filter in
             guard let self else { return }
-            filterButton.isSelected = filter == .latest ? true : false
+            orderedButton.isSelected = filter == .latest ? true : false
         }
     }
     
@@ -151,9 +151,8 @@ final class SearchPhotoVC: BaseVC {
     }
     
     @objc
-    func filterButtonTapped(_ sender: FilterButton){
-        print(#function)
-        viewModel.inputFiltering.value = !sender.isSelected ? .latest : .relevant
+    func orderedButtonTapped(_ sender: SelectionButton){
+        viewModel.inputOrdered.value = !sender.isSelected ? .latest : .relevant
     }
 }
 
@@ -192,7 +191,7 @@ extension SearchPhotoVC: UICollectionViewDelegate, UICollectionViewDataSource, U
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let photo = viewModel.outputSearchResult.value[indexPath.row]
-        let vc = PhotoDetailVC(photo: photo)
+        let vc = PhotoDetailVC(photo: photo, isSaved: false)
         navigationController?.pushViewController(vc, animated: true)
     }
     

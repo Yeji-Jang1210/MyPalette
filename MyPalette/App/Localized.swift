@@ -58,6 +58,7 @@ enum Localized {
     
     //save
     case save_list_isEmpty
+    case oldest
     
     var title: String {
         switch self {
@@ -128,6 +129,8 @@ enum Localized {
             return "최신순"
         case .relevant:
             return "관련순"
+        case .oldest:
+            return "과거순"
         default:
             return ""
         }

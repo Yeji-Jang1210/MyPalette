@@ -36,4 +36,16 @@ class SavedPhoto: Object {
         self.userProfileImage = photo.user.profileImage.medium
         self.name = photo.user.name
     }
+    
+    var userProfileImageName: String {
+        return "\(photoId)_\(name)"
+    }
+    
+    func convertSavedPhotoToPhoto() -> Photo {
+        let profileImage = ProfileImage(medium: userProfileImage)
+        let photoURL = PhotoURL(raw: rawImageUrl, small: smallImageUrl)
+        let user = PhotoUser(profileImage: profileImage, name: name)
+        
+        return Photo(id: photoId, likes: likes, width: width, height: height, urls: photoURL, createdAt: createdAt, user: user)
+    }
 }

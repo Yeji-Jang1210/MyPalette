@@ -75,9 +75,11 @@ final class PhotoDetailVC: BaseVC {
     }()
     
     private let viewModel: PhotoDetailVM
+    private var isSaved: Bool
     
-    init(photo: Photo){
+    init(photo: Photo, isSaved: Bool){
         viewModel = PhotoDetailVM(photo: photo)
+        self.isSaved = isSaved
         super.init(isChild: true)
     }
     
@@ -171,7 +173,12 @@ final class PhotoDetailVC: BaseVC {
         viewModel.outputPhoto.bind { [weak self] photo in
             guard let self, let photo else { return }
             
-            profileView.imagePath = photo.user.profileImage.medium
+            if !isSaved {
+                profileView.imagePath = photo.user.profileImage.medium
+            } else {
+                profileView.image = FileManager.loadImageToDocument(filename: photo.userProfileImageName)
+            }
+            
             profileView.userName = photo.user.name
             profileView.updateDate = photo.createdDateText
             sizeValueLabel.text = photo.sizeText
@@ -186,7 +193,14 @@ final class PhotoDetailVC: BaseVC {
         
         viewModel.outputSetPhotoImageTrigger.bind { [weak self] path in
             guard let self, let path else { return }
-            setPhotoImageView(path: path)
+            
+            if !isSaved {
+                setPhotoImageView(path: path)
+            } else {
+                if let photoName = viewModel.outputPhoto.value?.id {
+                    photoImageView.image = FileManager.loadImageToDocument(filename: photoName)
+                }
+            }
         }
         
         viewModel.outputPhotoIsSaved.bind { [weak self] isSaved in
@@ -211,7 +225,7 @@ final class PhotoDetailVC: BaseVC {
             guard let self else { return }
             switch result {
             case .success(_):
-                viewModel.inputSetImageSuccessTrigger.value = ()
+                break
             case .failure(_):
                 photoImageView.kf.cancelDownloadTask()
                 view.makeToast("이미지를 불러오는데 실패했습니다.")

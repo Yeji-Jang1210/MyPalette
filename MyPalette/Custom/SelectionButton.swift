@@ -1,5 +1,5 @@
 //
-//  FilterButton.swift
+//  SelectionButton.swift
 //  MyPalette
 //
 //  Created by 장예지 on 7/26/24.
@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class FilterButton: UIButton {
+final class SelectionButton: UIButton {
     var selectTitle: String
     var unselectTitle: String
     

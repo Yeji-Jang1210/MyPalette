@@ -157,7 +157,7 @@ extension TrendVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColle
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let photo = viewModel.outputPhotoList.value[collectionView.tag][indexPath.row]
-        let vc = PhotoDetailVC(photo: photo)
+        let vc = PhotoDetailVC(photo: photo, isSaved: false)
         navigationController?.pushViewController(vc, animated: true)
     }
     

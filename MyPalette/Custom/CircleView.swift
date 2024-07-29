@@ -1,5 +1,5 @@
 //
-//  CircleButton.swift
+//  CircleView.swift
 //  MyPalette
 //
 //  Created by 장예지 on 7/28/24.

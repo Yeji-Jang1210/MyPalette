@@ -29,6 +29,12 @@ final class SavedPhotoVC: BaseVC {
         return object
     }()
     
+    private lazy var orderedButton: SelectionButton = {
+        let object = SelectionButton(selectTitle: SavedOrderType.oldest.text, unselectTitle: SavedOrderType.latest.text)
+        object.addTarget(self, action: #selector(orderedButtonTapped), for: .touchUpInside)
+        return object
+    }()
+    
     private let viewModel = SavedPhotoVM()
     
     override func viewDidLoad() {
@@ -38,13 +44,14 @@ final class SavedPhotoVC: BaseVC {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewModel.inputViewAppearTrigger.value = ()
+        viewModel.inputOrderedPhoto.value = orderedButton.isSelected ? .oldest : .latest
     }
     
     override func configureHierarchy() {
         super.configureHierarchy()
         view.addSubview(collectionView)
         view.addSubview(emptyLabel)
+        view.addSubview(orderedButton)
     }
     
     override func configureLayout() {
@@ -55,6 +62,11 @@ final class SavedPhotoVC: BaseVC {
         
         emptyLabel.snp.makeConstraints { make in
             make.center.equalTo(collectionView)
+        }
+        
+        orderedButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(12)
         }
     }
     
@@ -75,7 +87,7 @@ final class SavedPhotoVC: BaseVC {
         
         viewModel.outputPhoto.bind { [weak self] photo in
             guard let self, let photo else { return }
-            let vc = PhotoDetailVC(photo: photo)
+            let vc = PhotoDetailVC(photo: photo, isSaved: true)
             navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -83,6 +95,13 @@ final class SavedPhotoVC: BaseVC {
     @objc
     func savedButtonTapped(_ sender: UIButton){
         viewModel.inputSaveButtonTapped.value = sender.tag
+    }
+    
+    @objc
+    func orderedButtonTapped(_ sender: SelectionButton){
+        print(#function)
+        sender.isSelected.toggle()
+        viewModel.inputOrderedPhoto.value = !sender.isSelected ? .latest : .oldest
     }
 }
 

@@ -109,7 +109,6 @@ final class ProfileSettingVM: BaseVM {
                 }
                 
                 let selectedCount = mbti.values.filter({ $0 == true }).count
-                createMBTI()
                 isVerifiedMBTI = selectedCount == 4
                 outputMBTIButton.value = mbti
             }
@@ -159,10 +158,9 @@ final class ProfileSettingVM: BaseVM {
     
     private func deletePhotos(){
         let photos = SavePhotoRepository.shared.fetchPhotos()
-        for id in photos.map({ $0.photoId }) {
-            DispatchQueue.global().async {
-                FileManager.removeImageFromDocument(filename: id)
-            }
+        for photo in photos {
+            FileManager.removeImageFromDocument(filename: photo.photoId)
+            FileManager.removeImageFromDocument(filename: photo.userProfileImageName)
         }
     }
     
@@ -171,7 +169,7 @@ final class ProfileSettingVM: BaseVM {
             .filter{ $0.value == true }
             .map { $0.key }
             .sorted(by:<)
-
+        
         return mbti
     }
 }

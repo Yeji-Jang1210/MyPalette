@@ -29,6 +29,10 @@ struct Photo: Decodable {
     var sizeText: String {
         return "\(width) x \(height)"
     }
+    
+    var userProfileImageName: String {
+        return "\(id)_\(user.name)"
+    }
 }
 
 struct PhotoURL: Decodable{

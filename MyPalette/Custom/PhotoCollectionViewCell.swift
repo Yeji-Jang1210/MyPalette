@@ -1,5 +1,5 @@
 //
-//  TrendCollectionViewCell.swift
+//  PhotoCollectionViewCell.swift
 //  MyPalette
 //
 //  Created by 장예지 on 7/23/24.
