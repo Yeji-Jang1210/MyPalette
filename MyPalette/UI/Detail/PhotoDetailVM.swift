@@ -40,7 +40,7 @@ final class PhotoDetailVM: BaseVM {
         }
         
         inputSetImageSuccessTrigger.bind { [weak self] trigger in
-            guard let self, let trigger else { return }
+            guard let self, trigger != nil else { return }
             
             outputPhoto.value = photo
             outputStatistics.value = statistics
@@ -81,7 +81,8 @@ final class PhotoDetailVM: BaseVM {
                 statistics = result
                 outputSetPhotoImageTrigger.value = photo?.urls.raw
             case .error(let error):
-                print(error)
+                outputSetPhotoImageTrigger.value = nil
+                outputPresentToastMessage.value = "네트워크 연결에 실패했습니다."
             }
         }
     }

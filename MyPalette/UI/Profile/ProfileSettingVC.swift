@@ -185,7 +185,7 @@ final class ProfileSettingVC: BaseVC, SendProfileImageId {
             nicknameStatusLabel.textColor = isValid ? Color.primaryBlue : Color.primaryRed
         }
         
-        viewModel.outputIsNicknameValid.bind { [weak self] result in
+        viewModel.outputIsVerifiedProfile.bind { [weak self] result in
             guard let self else { return }
             switch self.type {
             case .setting:
@@ -224,6 +224,11 @@ final class ProfileSettingVC: BaseVC, SendProfileImageId {
             }
         }
         
+        viewModel.outputMBTIButton.bind { [weak self] mbti in
+            guard let self else { return }
+            collectionView.reloadData()
+        }
+        
     }
     
     //MARK: - function
@@ -259,11 +264,6 @@ final class ProfileSettingVC: BaseVC, SendProfileImageId {
         viewModel.inputNickname.value = sender.text
     }
     
-    @objc
-    func mbtiButtonTapped(_ sender: CircleButton){
-        sender.isSelected.toggle()
-    }
-    
     func dataSend(id: Int) {
         viewModel.inputImageNum.value = id
     }
@@ -272,19 +272,26 @@ final class ProfileSettingVC: BaseVC, SendProfileImageId {
 extension ProfileSettingVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return MBTI.allCases.count
+        return viewModel.outputMBTIButton.value.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MBTICollectionViewCell.identifier, for: indexPath) as! MBTICollectionViewCell
-        cell.mbtiButton.tag = indexPath.row
-        cell.setTitle(title: MBTI.allCases[indexPath.row].rawValue)
-        cell.mbtiButton.addTarget(self, action: #selector(mbtiButtonTapped), for: .touchUpInside)
+        cell.setTitle(title: MBTI.allCases[indexPath.row].title)
+        if let isSelected = viewModel.outputMBTIButton.value[indexPath.row] {
+            cell.mbtiView.isSelected = isSelected
+        }
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (collectionView.bounds.width - 30) / 4
         return CGSize(width: width, height: width)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(#function)
+        viewModel.inputMBTIButtonTapped.value = indexPath.row
     }
 }

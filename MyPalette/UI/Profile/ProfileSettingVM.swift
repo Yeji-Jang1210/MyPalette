@@ -8,45 +8,46 @@
 import Foundation
 import RealmSwift
 
-enum ValidateNicknameStatus {
-    case invalid_nickname
-    case invalid_range
-    case contains_specific_character
-    case contains_number
-    case nickname_isValid
-    
-    var message: String {
-        switch self {
-        case .invalid_nickname:
-            return ""
-        case .invalid_range:
-            return Localized.nickname_range_error.text
-        case .contains_specific_character:
-            return Localized.nickname_contains_specific_character.text
-        case .contains_number:
-            return Localized.nickname_contains_number.text
-        case .nickname_isValid:
-            return Localized.nickname_isValid.text
-        }
-    }
-}
-
 final class ProfileSettingVM: BaseVM {
     //MARK: - Input
-    var inputNickname = Observable<String?>(User.shared.nickname)
-    var inputImageNum = Observable<Int?>(User.shared.profileImageId)
+    var inputNickname = Observable<String?>(UserDefaultsManager.get(forKey: .nickname) as? String)
+    var inputImageNum = Observable<Int?>(UserDefaultsManager.get(forKey: .profileImageId) as? Int)
+    var inputMBTI = Observable<[Int]?>(UserDefaultsManager.get(forKey: .mbti) as? [Int])
     var inputUpdateTrigger = Observable<Void?>(nil)
     var inputSaveTrigger = Observable<Void?>(nil)
     var inputDeleteUserTrigger = Observable<Void?>(nil)
+    var inputMBTIButtonTapped = Observable<Int?>(nil)
     
     //MARK: - Output
     var outputNickname = Observable<String?>(nil)
     var outputNicknameStatus = Observable<(ValidateNicknameStatus?, Bool?)>((nil, nil))
-    var outputIsNicknameValid = Observable<Bool>(false)
+    var outputIsVerifiedProfile = Observable<Bool>(false)
     var outputImageNum = Observable<Int>(0)
     var outputIsUpdate = Observable<Bool?>(nil)
     var outputIsSaved = Observable<Bool?>(nil)
     var outputIsDeleteSucceeded = Observable<Bool?>(nil)
+    var outputMBTIButton = Observable<[Int: Bool]>([:])
+    
+    private var isVerifiedNickname: Bool = false  {
+        didSet {
+            outputIsVerifiedProfile.value = isVerifiedMBTI && isVerifiedNickname
+        }
+    }
+    
+    private var isVerifiedMBTI: Bool = false {
+        didSet {
+            outputIsVerifiedProfile.value = isVerifiedMBTI && isVerifiedNickname
+        }
+    }
+    
+    private var mbti: [Int: Bool] = [:]
+    
+    override init(){
+        for preference in MBTI.allCases {
+            mbti[preference.rawValue] = false
+            outputMBTIButton.value = mbti
+        }
+    }
     
     override func bind(){
         inputNickname.bind { [weak self] nickname in
@@ -56,7 +57,7 @@ final class ProfileSettingVM: BaseVM {
             validateNickname { [weak self] status, isValid in
                 guard let self else { return }
                 outputNicknameStatus.value = (status, isValid)
-                outputIsNicknameValid.value = isValid
+                isVerifiedNickname = isValid
             }
         }
         
@@ -79,15 +80,43 @@ final class ProfileSettingVM: BaseVM {
             guard let self, trigger != nil else { return }
             
             deletePhotos()
-            User.shared.delete()
+            UserDefaultsManager.delete()
             SavePhotoRepository.shared.deleteAll { [weak self] result in
                 guard let self else { return }
                 outputIsDeleteSucceeded.value = result
             }
         }
+        
+        inputMBTI.bind { [weak self] userMBTI in
+            guard let self, let userMBTI else { return }
+            for selected in userMBTI {
+                mbti[selected] = true
+            }
+            isVerifiedMBTI = true
+            outputMBTIButton.value = mbti
+        }
+        
+        inputMBTIButtonTapped.bind { [weak self] index in
+            guard let self, let index else { return }
+            
+            if let isSelected = mbti[index] {
+                if isSelected {
+                    mbti[index]?.toggle()
+                } else {
+                    let oppositeIndex = (index % 2 == 0) ? index + 1 : index - 1
+                    mbti[oppositeIndex] = false
+                    mbti[index]?.toggle()
+                }
+                
+                let selectedCount = mbti.values.filter({ $0 == true }).count
+                createMBTI()
+                isVerifiedMBTI = selectedCount == 4
+                outputMBTIButton.value = mbti
+            }
+        }
     }
     
-    func validateNickname(completion: @escaping ( ValidateNicknameStatus?, Bool) -> ()){
+    private func validateNickname(completion: @escaping ( ValidateNicknameStatus?, Bool) -> ()){
         guard let nickname = inputNickname.value else {
             completion(ValidateNicknameStatus.invalid_nickname, false)
             return
@@ -115,37 +144,34 @@ final class ProfileSettingVM: BaseVM {
         return
     }
     
-    func updateData(){
-        userDataSaved { result in
-            self.outputIsSaved.value = result
-        }
-    }
-    
-    func createData(){
-        userDataSaved { result in
-            self.outputIsUpdate.value = true
-        }
-    }
-    
-    func userDataSaved(completion: @escaping (Bool) -> Void){
-        guard let nickname = outputNickname.value else {
-            completion(false)
-            return
-        }
+    private func updateData(){
+        guard let nickname = inputNickname.value else { return }
         
-        User.shared.signupDate = Date.now
-        User.shared.nickname = nickname
-        User.shared.profileImageId = outputImageNum.value
-        completion(true)
+        UserDefaultsManager.updateUser(nickname: nickname, mbti: createMBTI(), profileImage: outputImageNum.value)
+        self.outputIsSaved.value = true
     }
     
-    func deletePhotos(){
+    private func createData(){
+        guard let nickname = inputNickname.value else { return }
+        UserDefaultsManager.createUser(nickname: nickname, mbti: createMBTI(), profileImage: outputImageNum.value)
+        self.outputIsUpdate.value = true
+    }
+    
+    private func deletePhotos(){
         let photos = SavePhotoRepository.shared.fetchPhotos()
         for id in photos.map({ $0.photoId }) {
             DispatchQueue.global().async {
                 FileManager.removeImageFromDocument(filename: id)
             }
         }
-        
+    }
+    
+    private func createMBTI() -> [Int]{
+        let mbti = mbti
+            .filter{ $0.value == true }
+            .map { $0.key }
+            .sorted(by:<)
+
+        return mbti
     }
 }

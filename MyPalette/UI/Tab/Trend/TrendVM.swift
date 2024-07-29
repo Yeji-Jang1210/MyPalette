@@ -10,7 +10,7 @@ import Alamofire
 
 final class TrendVM: BaseVM {
     
-    var inputProfileImageNum: Observable<Int?> = Observable(User.shared.profileImageId)
+    var inputProfileImageNum: Observable<Int?> = Observable(UserDefaultsManager.get(forKey: .profileImageId) as? Int)
     var inputViewWillAppearTrigger: Observable<Void?> = Observable(nil)
     var inputProfileEditSucceed: Observable<Void?> = Observable(nil)
     
@@ -33,7 +33,7 @@ final class TrendVM: BaseVM {
         
         inputProfileEditSucceed.bind { [weak self] trigger in
             guard let self, trigger != nil else { return }
-            outputProfileImageNum.value = User.shared.profileImageId
+            outputProfileImageNum.value = UserDefaultsManager.get(forKey: .profileImageId) as? Int
         }
     }
     

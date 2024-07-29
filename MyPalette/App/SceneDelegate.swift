@@ -17,11 +17,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
         
-        print(User.shared.nickname)
-        print(User.shared.profileImageId)
-        print(User.shared.signupDateText)
+        UserDefaultsManager.checkUserDefaults()
         
-        if User.shared.nickname.isEmpty {
+        let user = UserDefaultsManager.get(forKey: .nickname) as? String ?? ""
+        if user.isEmpty {
             let nvc = UINavigationController(rootViewController: OnboardingVC())
             window?.rootViewController = nvc
         } else {

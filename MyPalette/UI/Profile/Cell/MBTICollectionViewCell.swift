@@ -10,15 +10,15 @@ import SnapKit
 
 final class MBTICollectionViewCell: UICollectionViewCell {
     
-    lazy var mbtiButton: CircleButton = {
-        let object = CircleButton()
+    lazy var mbtiView: CircleView = {
+        let object = CircleView()
         return object
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.addSubview(mbtiButton)
-        mbtiButton.snp.makeConstraints { make in
+        contentView.addSubview(mbtiView)
+        mbtiView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
@@ -28,6 +28,6 @@ final class MBTICollectionViewCell: UICollectionViewCell {
     }
     
     func setTitle(title: String){
-        mbtiButton.setTitle(title, for: .normal)
+        mbtiView.titleLabel.text = title
     }
 }

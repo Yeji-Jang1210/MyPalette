@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum MBTI: String, CaseIterable {
+enum MBTI: Int, CaseIterable {
     case E
     case I
     case S
@@ -16,4 +16,25 @@ enum MBTI: String, CaseIterable {
     case F
     case J
     case P
+    
+    var title: String {
+        switch self {
+        case .E:
+            return "E"
+        case .I:
+            return "I"
+        case .S:
+            return "S"
+        case .N:
+            return "N"
+        case .T:
+            return "T"
+        case .F:
+            return "F"
+        case .J:
+            return "J"
+        case .P:
+            return "P"
+        }
+    }
 }

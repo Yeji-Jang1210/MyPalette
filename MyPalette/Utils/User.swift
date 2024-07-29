@@ -7,58 +7,61 @@
 
 import Foundation
 
-
-
-class User {
-    static var shared = User()
-    
-    private init(){}
-    
-    var nickname: String {
-        get {
-            return UserDefaults.standard.string(forKey: "nickname") ?? ""
-        }
-        
-        set {
-            UserDefaults.standard.set(newValue, forKey: "nickname")
-        }
+struct UserDefaultsManager {
+    enum Keys: String, CaseIterable {
+        case nickname
+        case signupDate
+        case profileImageId
+        case mbti
     }
     
-    var signupDate: Date? {
-        get {
-            return UserDefaults.standard.object(forKey: "signupDate") as? Date
-        }
-        
-        set {
-            UserDefaults.standard.set(newValue, forKey: "signupDate")
-        }
+    static func set<T>(to: T, forKey: Self.Keys) {
+        UserDefaults.standard.setValue(to, forKey: forKey.rawValue)
+        print("📁 UserDefaultsManager: save \(forKey) complete")
     }
     
-    var profileImageId: Int? {
-        get {
-            return UserDefaults.standard.object(forKey: "profileImageId") as? Int
-        }
-        
-        set {
-            UserDefaults.standard.set(newValue, forKey: "profileImageId")
-        }
+    static func get(forKey: Self.Keys) -> Any? {
+        return UserDefaults.standard.object(forKey: forKey.rawValue)
     }
     
-    var signupDateText: String {
-        guard let date = signupDate else { return "" }
+    static var signupDateText: String {
+        guard let date = UserDefaultsManager.get(forKey: .signupDate) as? Date else { return "" }
         let format = DateFormatter()
         format.dateFormat = "yyyy. MM. dd"
         return "\(format.string(from: date)) 가입"
     }
     
-    func delete(){
-        nickname = ""
-        profileImageId = nil
-        signupDate = nil
+    static func delete(){
+        for key in Keys.allCases {
+            UserDefaults.standard.removeObject(forKey: key.rawValue)
+        }
         
-        
-        print(User.shared.nickname)
-        print(User.shared.profileImageId)
-        print(User.shared.signupDateText)
+        // 데이터 삭제 확인
+        checkUserDefaults()
+    }
+    
+    static func createUser(nickname: String, mbti: [Int], profileImage: Int){
+        UserDefaultsManager.set(to: nickname, forKey: .nickname)
+        UserDefaultsManager.set(to: mbti, forKey: .mbti)
+        UserDefaultsManager.set(to: Date(), forKey: .signupDate)
+        UserDefaultsManager.set(to: profileImage, forKey: .profileImageId)
+    }
+    
+    static func updateUser(nickname: String, mbti: [Int], profileImage: Int){
+        UserDefaultsManager.set(to: nickname, forKey: .nickname)
+        UserDefaultsManager.set(to: mbti, forKey: .mbti)
+        UserDefaultsManager.set(to: profileImage, forKey: .profileImageId)
+    }
+    
+    static func checkUserDefaults(){
+        let nickname = UserDefaults.standard.object(forKey: "nickname")
+        let signupDate = UserDefaults.standard.object(forKey: "signupDate")
+        let profileImageId = UserDefaults.standard.object(forKey: "profileImageId")
+        let mbti = UserDefaults.standard.object(forKey: "mbti") as? [Int]
+
+        print("👤 nickname: \(nickname ?? "")")
+        print("📆 signupDate: \(signupDate ?? "")")
+        print("🥹 profileImageId: \(profileImageId ?? "")")
+        print("🍀 mbti: \(mbti ?? [])")
     }
 }

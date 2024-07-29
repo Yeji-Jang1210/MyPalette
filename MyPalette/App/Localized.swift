@@ -70,7 +70,7 @@ enum Localized {
         case .searchPhoto:
             return "SEARCH PHOTO"
         case .like:
-            return "\(User.shared.nickname)'S POLAROID"
+            return "\(UserDefaultsManager.get(forKey: .nickname) as? String ?? "User")'S POLAROID"
         case .profile_setting:
             return "PROFILE SETTING"
         case .profile_edit:
