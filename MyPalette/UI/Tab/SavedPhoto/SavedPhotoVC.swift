@@ -90,6 +90,11 @@ final class SavedPhotoVC: BaseVC {
             let vc = PhotoDetailVC(photo: photo, isSaved: true)
             navigationController?.pushViewController(vc, animated: true)
         }
+        
+        viewModel.outputOrderButtonSelected.bind { [weak self] isSelected in
+            guard let self, let isSelected else { return }
+            orderedButton.isSelected = isSelected
+        }
     }
     
     @objc
@@ -100,8 +105,7 @@ final class SavedPhotoVC: BaseVC {
     @objc
     func orderedButtonTapped(_ sender: SelectionButton){
         print(#function)
-        sender.isSelected.toggle()
-        viewModel.inputOrderedPhoto.value = !sender.isSelected ? .latest : .oldest
+        viewModel.inputOrderButtonTapped.value = !sender.isSelected
     }
 }
 
