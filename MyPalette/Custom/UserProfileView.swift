@@ -68,6 +68,13 @@ final class UserProfileView: UIView {
         }
     }
     
+    var textColor: UIColor = .black {
+        didSet {
+            userNameLabel.textColor = textColor
+            updateDateLabel.textColor = textColor
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureHierarchy()

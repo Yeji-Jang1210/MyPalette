@@ -60,6 +60,11 @@ extension APIManager {
                 "page": param.page,
                 "per_page": 20
             ]
+        case .random:
+            return [
+                "orientation": "portrait",
+                "count": 10
+            ]
         default:
             return nil
         }
