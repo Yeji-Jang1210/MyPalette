@@ -22,8 +22,8 @@ struct Photo: Decodable {
     }
     
     var createdDateText: String? {
-        guard let date = createdAt.convertStringToDate(format: "yyyy-MM-dd'T'HH:mm:ssZ") else { return nil }
-        return date.convertDateToString(format: "yyyy.MM.dd 게시됨")
+        guard let date = createdAt.convertStringToDate(format: .iso8601) else { return nil }
+        return date.convertDateToString(format: .created)
     }
     
     var sizeText: String {

@@ -121,7 +121,7 @@ extension SavedPhotoVC: UICollectionViewDelegate, UICollectionViewDataSource, UI
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SavedPhotoCollectionViewCell.identifier, for: indexPath) as! SavedPhotoCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SavedPhotoCollectionViewCell.identifier, for: indexPath) as? SavedPhotoCollectionViewCell else { return UICollectionViewCell() }
         cell.saveButton.tag = indexPath.row
         cell.saveButton.addTarget(self, action: #selector(savedButtonTapped), for: .touchUpInside)
         if let id = viewModel.outputSavedPhotoList.value?[indexPath.row].photoId{

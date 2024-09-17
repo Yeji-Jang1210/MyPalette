@@ -61,6 +61,17 @@ final class RandomPhotoVC: BaseVC {
             guard let self, photos != nil else { return }
             collectionView.reloadData()
         }
+        
+        viewModel.outputPageNumber.bind { [weak self] page in
+            guard let self, let page else { return }
+            print(page)
+            paginationView.page = page
+        }
+        
+        viewModel.outputTotalPageNumber.bind { [weak self] total in
+            guard let self, let total else { return }
+            paginationView.totalPage = total
+        }
     }
 }
 
@@ -75,7 +86,7 @@ extension RandomPhotoVC: UICollectionViewDelegate, UICollectionViewDelegateFlowL
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RandomPhotoCollectionViewCell.identifier, for: indexPath) as! RandomPhotoCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RandomPhotoCollectionViewCell.identifier, for: indexPath) as? RandomPhotoCollectionViewCell else { return UICollectionViewCell() }
         if let photo = viewModel.outputRandomPhoto.value?[indexPath.row] {
             cell.setData(photo)
         }
@@ -83,5 +94,5 @@ extension RandomPhotoVC: UICollectionViewDelegate, UICollectionViewDelegateFlowL
         return cell
     }
     
-    
+    //20240731 pagination 추가하기
 }

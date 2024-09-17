@@ -180,7 +180,7 @@ extension SearchPhotoVC: UICollectionViewDelegate, UICollectionViewDataSource, U
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchPhotoCollectionViewCell.identifier, for: indexPath) as! SearchPhotoCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchPhotoCollectionViewCell.identifier, for: indexPath) as? SearchPhotoCollectionViewCell else { return UICollectionViewCell() }
         cell.saveButton.tag = indexPath.row
         cell.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         

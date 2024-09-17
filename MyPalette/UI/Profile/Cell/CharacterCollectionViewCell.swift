@@ -38,7 +38,7 @@ class CharacterCollectionViewCell: UICollectionViewCell {
     }
     
     //MARK: - function
-    public func setData(_ image: UIImage){
+    func setData(_ image: UIImage){
         characterView.image = image
     }
 }

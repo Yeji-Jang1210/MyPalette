@@ -276,7 +276,7 @@ extension ProfileSettingVC: UICollectionViewDelegate, UICollectionViewDataSource
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MBTICollectionViewCell.identifier, for: indexPath) as! MBTICollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MBTICollectionViewCell.identifier, for: indexPath) as? MBTICollectionViewCell else { return UICollectionViewCell() }
         cell.setTitle(title: MBTI.allCases[indexPath.row].title)
         if let isSelected = viewModel.outputMBTIButton.value[indexPath.row] {
             cell.mbtiView.isSelected = isSelected

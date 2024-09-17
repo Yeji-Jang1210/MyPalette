@@ -9,6 +9,8 @@ import Foundation
 
 final class RandomPhotoVM: BaseVM {
     var outputRandomPhoto = Observable<[Photo]?>(nil)
+    var outputPageNumber = Observable<Int?>(nil)
+    var outputTotalPageNumber = Observable<Int?>(nil)
     
     var inputRandomPhoto = Observable<[Photo]>([])
     override func bind() {
@@ -22,6 +24,7 @@ final class RandomPhotoVM: BaseVM {
                 switch response {
                 case .success(let results):
                     outputRandomPhoto.value = results
+                    outputTotalPageNumber.value = results.count
                 case .error(let error):
                     print(error)
                 }

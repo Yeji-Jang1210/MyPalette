@@ -26,9 +26,7 @@ struct UserDefaultsManager {
     
     static var signupDateText: String {
         guard let date = UserDefaultsManager.get(forKey: .signupDate) as? Date else { return "" }
-        let format = DateFormatter()
-        format.dateFormat = "yyyy. MM. dd"
-        return "\(format.string(from: date)) 가입"
+        return date.convertDateToString(format: .signup)
     }
     
     static func delete(){

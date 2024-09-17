@@ -10,13 +10,20 @@ import SnapKit
 
 final class PaginationView: UIView {
     
-    let pageLabel = {
-       let object = UILabel()
+    private lazy var pageLabel = {
+        let object = UILabel()
         object.font = BaseFont.medium.basicFont
         object.textColor = .white
-        object.text = "8 / 10"
         return object
     }()
+    
+    var page: Int = 0 {
+        didSet {
+            pageLabel.text = "\(page+1) / \(totalPage)"
+        }
+    }
+    
+    var totalPage: Int = 0
     
     init(){
         super.init(frame: .zero)
